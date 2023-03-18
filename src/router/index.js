@@ -1,25 +1,48 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import RepoDetails from '@/components/RepoDetails.vue';
+import RepoList from '@/components/RepoList.vue';
+import Home from '@/views/Home.vue';
+import NotFound from '@/views/NotFound.vue';
+
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
-  },
+    component: Home,
+  },  
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+      path: '/repos',
+      name: 'RepoList',
+      component: RepoList
+    },
+    {
+      path: '/repo/:id',
+      name: 'repo',
+      component: RepoDetails,
+    },
+    {
+      path: '/*/:catchAll(.*)',
+      name: "NotFound",
+      component: NotFound,
+      redirect: '/404'
+    },
+];
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes
-})
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
+});
 
-export default router
+export default router;
+
+
+
+
+
+{/* <ul>
+        <li v-for="repo in pagedRepos" :key="repo.id">
+          <router-link :to="{ name: 'repo', params: { id: repo.id } }">{{ repo.name }}</router-link>
+        </li>
+      </ul>
+      <pagination :total="repos.length" :per-page="perPage" @change="changePage"></pagination> */}
