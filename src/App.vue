@@ -2,9 +2,9 @@
   <div>
     <div>
       <nav>
-    <router-link to="/">Home</router-link>
-    <router-link to="/repos">My Repos</router-link>
-    <router-link to="/.*">404 Page</router-link>
+    <router-link to="/" class="router-link">Home</router-link>
+    <router-link to="/repos" class="router-link">My Repos</router-link>
+    <router-link to="/.*" class="router-link">404 Page</router-link>
     </nav>
     <router-view/>
     </div>
@@ -23,7 +23,7 @@ export default {
     return {
       repos: [],
       page: 1,
-      perPage: 5,
+      perPage: 6,
     };
   },
   computed: {
@@ -47,3 +47,22 @@ export default {
   },
 };
 </script>
+
+<style>
+/* Style for router-link */
+.router-link {
+  display: inline-block;
+  text-decoration: none;
+  color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in-out;
+  float: right;
+  font-size: 1.2em;
+}
+
+.router-link:hover {
+  background-color: #eee;
+}
+
+</style>

@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-      <img alt="Vue logo" src="../assets/logo.png">
+      <img alt="Vue logo" src="../assets/logo.png" class="image">
           <h1>Welcome to my GitHub Repositories App</h1>
           <p>Click the button below to view a list of my repositories:</p>
           <router-link to="/repos" class="btn btn-primary">View Repositories</router-link>
@@ -16,7 +16,7 @@ export default {
 <style scoped>
 .home {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 10px;
 }
 
 .btn {
@@ -48,20 +48,9 @@ export default {
   border-color: #204d74;
 }
 
-.nav-link {
-  display: block;
-  padding: 1rem;
-  text-decoration: none;
-  color: black;
-  
-}
-
-.nav-item {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  float: left;
-
-  
+.image {
+  display: flex;
+  width: 50px;
+  height: 50px;
 }
 </style>

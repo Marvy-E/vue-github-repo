@@ -1,23 +1,23 @@
 <template>
     <div class="repo-list">
-      <div v-for="repo in repos" :key="repo.id" class="repo-card">
+      <div v-for="repo in reposList" :key="repo.id" class="repo-card">
         <h3>{{ repo.name }}</h3>
         <p>{{ repo.description }}</p>
         <a :href="repo.html_url" target="_blank">View on GitHub</a>
       </div>
-      <div v-if="!repos.length">Loading...</div>
+      <div v-if="!reposList.length">Loading...</div>
       <div v-if="error">{{ error }}</div>
       <div class="pagination">
         <button :disabled="page === 1" @click="previousPage">Previous</button>
         <span>{{ page }}</span>
-        <button :disabled="repos.length < perPage" @click="nextPage">Next</button>
+        <button :disabled="reposList.length < perPage" @click="nextPage">Next</button>
       </div>
     </div>
   </template>
   
   <script>
   import axios from 'axios';
-
+  
   export default {
     props: {
       total: {
@@ -31,7 +31,7 @@
     },
     data() {
       return {
-        repos: [],
+        reposList: [],
         page: 1,
         error: '',
       };
@@ -45,7 +45,7 @@
               per_page: this.perPage,
             },
           });
-          this.repos = response.data;
+          this.reposList = response.data;
         } catch (error) {
           this.error = error.message;
         }
@@ -59,11 +59,19 @@
         await this.fetchRepos();
       },
     },
+    // computed: {
+    //   paginatedRepos() {
+    //     const startIndex = (this.page - 1) * this.perPage;
+    //     const endIndex = startIndex + this.perPage;
+    //     return this.reposList.slice(startIndex, endIndex);
+    //   },
+    // },
     mounted() {
       this.fetchRepos();
     },
   };
   </script>
+  
   
   <style>
 
