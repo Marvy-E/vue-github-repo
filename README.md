@@ -1,19 +1,7 @@
 # vue-github-repos
 
-## Project setup
-```
-npm install
-```
+### A Vue website, that uses Axios and Fetch API to show all github repositories on a username with proper vue routing implemented.
 
-### Compiles and hot-reloads for development
+## Hosted link
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+https://vue-github-repo.vercel.app/
