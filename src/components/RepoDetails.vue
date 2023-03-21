@@ -23,16 +23,23 @@
   import axios from "axios";
   
   export default {
+    name: "RepoDetails",
     data() {
       return {
         repo: {},
       };
     },
     async mounted() {
+        await new Promise((resolve) => setTimeout(resolve, 1700));
       const response = await axios.get(
         `https://api.github.com/repos/Marvy-E/${this.$route.params.id}`
       );
       this.repo = response.data;
+    },
+    methods: {
+        redirectToRepos() {
+            this.$router.push("/repos");
+        },
     },
   };
   </script>
