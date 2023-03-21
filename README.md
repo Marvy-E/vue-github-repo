@@ -1,19 +1,7 @@
 # vue-github-repos
 
-## Project setup
-```
-npm install
-```
+### A Vue application, that uses Axios and Fetches API to show all github repositories with proper vue routing implemented. Also implement a wildcard route to catch 404 pages.
 
-### Compiles and hot-reloads for development
+## Hosted link
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+https://vue-github-repo.vercel.app/
