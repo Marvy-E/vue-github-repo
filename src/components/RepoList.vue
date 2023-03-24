@@ -1,19 +1,19 @@
 <template>
     <div class="repo-list">
-      <div v-for="repo in reposList" :key="repo.id" class="repo-card">
+      <div v-for="repo in paginatedRepos" :key="repo.id" class="repo-card">
         <h3>{{ repo.name }}</h3>
         <p>{{ repo.description }}</p>
         <div class="repo-links">
-        <a :href="repo.html_url" target="_blank">View on GitHub</a>
-        <RouterLink to="/repo/:id" class="view-repo">View Repo</RouterLink>
+          <a :href="repo.html_url" target="_blank">View on GitHub</a>
+          <router-link :to="{ name: 'RepoDetails', params: { id: repo.id } }" class="view-repo">View Repo</router-link>
         </div>
       </div>
-      <div v-if="!reposList.length">Loading...</div>
-      <div v-if="error">{{ error }}</div>
+      <div v-if="loading">Loading...</div>
+      <div v-if="!paginatedRepos.length && !loading">No Repos Found</div>
       <div class="pagination">
-        <button :disabled="page === 1" @click="previousPage">Previous</button>
-        <span>{{ page }}</span>
-        <button :disabled="reposList.length < perPage" @click="nextPage">Next</button>
+        <button :disabled="currentPageIndex === 0" @click="changePage(currentPageIndex - 1)">Previous</button>
+        <button v-for="(page, index) in totalPages" :key="index" :class="{ active: index === currentPageIndex }" @click="changePage(index)">{{ page }}</button>
+        <button :disabled="currentPageIndex === totalPages - 1" @click="changePage(currentPageIndex + 1)">Next</button>
       </div>
     </div>
   </template>
@@ -22,43 +22,54 @@
   import axios from 'axios';
   
   export default {
+    name: 'RepoList',
     props: {
-      total: {
-        type: Number,
-        required: true,
-      },
+      // perPage: {
+      //   type: Number,
+      //   required: true,
+      // },
       perPage: {
         type: Number,
         required: true,
       },
     },
-        data() {
-            return {
-                reposList: [],
-                page: 1,
-                perPage: 5,
-                totalPages: 0,
-                loading: true,
-            };
-        },
-
+    data() {
+      return {
+        reposList: [],
+        page: 1,
+        currentPageIndex: 0,
+        perPage: 4,
+        loading: true,
+      };
+    },
     methods: {
       async fetchRepos() {
-        await new Promise ((resolve) => setTimeout(resolve, 1700));
-        this.loading = true;
+        await new Promise((resolve) => setTimeout(resolve, 1700));
         try {
-          const response = await axios.get(`https://api.github.com/users/Marvy-E/repos`); 
+          const response = await axios.get('https://api.github.com/users/Marvy-E/repos');
           this.reposList = response.data;
+          if (this.reposList.length === 0) {
+      this.totalPages = 0;
+    } else {
           this.totalPages = Math.ceil(this.reposList.length / this.perPage);
-        } catch (error) {
-        } finally {
-            this.loading = false;
         }
+        } catch (error) {
+          console.error(error);
+        } finally {
+          this.loading = false;
+        }
+      },
+      changePage(pageIndex) {
+        this.currentPageIndex = pageIndex;
+        this.page = pageIndex + 1;
       },
     },
     computed: {
       paginatedRepos() {
-        const startIndex = (this.page - 1) * this.perPage;
+        if (!this.reposList || !this.reposList.length) {
+          return [];
+        }
+        const startIndex = this.currentPageIndex * this.perPage;
         const endIndex = startIndex + this.perPage;
         return this.reposList.slice(startIndex, endIndex);
       },
@@ -68,6 +79,7 @@
     },
   };
   </script>
+  
   
   
   <style>
@@ -116,16 +128,6 @@
     border-color: rgb(59, 151, 120);
 }
 
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .pagination button {
-    margin: 0 5px;
-  }
-
   .view-repo {
     border: 1px solid rgb(169, 220, 203);
     text-decoration: none;
@@ -140,5 +142,34 @@
     background-color: rgb(59, 151, 120);
     border-color: rgb(59, 151, 120);
   }
+
+  .pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.pagination button {
+  border: none;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  color: #666;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  height: 30px;
+}
+
+.pagination button.active {
+  background-color: #666;
+  color: #fff;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
   </style>
   

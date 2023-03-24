@@ -7,7 +7,7 @@
           <strong>Language:</strong> {{ repo.language }}
         </div>
         <div class="detail">
-          <strong>Stars:</strong> {{ repo.stargazers_count }}
+          <strong>Description:</strong> {{ repo.description }}
         </div>
         <div class="detail">
           <strong>Watchers:</strong> {{ repo.watchers_count }}
@@ -24,21 +24,30 @@
   
   export default {
     name: "RepoDetails",
+    props: ["id"],
     data() {
       return {
         repo: {},
+        loading: true,
+        error: null,
       };
     },
     async mounted() {
         await new Promise((resolve) => setTimeout(resolve, 1700));
+      try {
       const response = await axios.get(
         `https://api.github.com/repos/Marvy-E/${this.$route.params.id}`
       );
       this.repo = response.data;
+      this.loading = false;
+    } catch (error) {
+      console.error(error);
+      this.loading = false;
+    }
     },
     methods: {
         redirectToRepos() {
-            this.$router.push("/repos");
+            this.$router.push({ name: "ReposDetails", params: { id: repo.id } });
         },
     },
   };

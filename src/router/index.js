@@ -14,11 +14,11 @@ const routes = [
   {
       path: '/repos',
       name: 'RepoList',
-      component: RepoList
+      component: RepoList,
     },
     {
       path: '/repo/:id',
-      name: 'repo',
+      name: 'RepoDetails',
       component: RepoDetails,
     },
     {
@@ -28,7 +28,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 
